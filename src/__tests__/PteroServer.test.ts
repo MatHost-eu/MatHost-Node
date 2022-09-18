@@ -1,4 +1,4 @@
-import { PteroServer, PteroSocket } from '../index';
+import { PteroServer } from '../index';
 import 'dotenv/config';
 
 test('PteroServer ServerData', async () => {
@@ -47,12 +47,4 @@ test('PteroServer ActivityData', async () => {
 
   const gameData = await server.getActivityData();
   expect(gameData).toBeDefined();
-});
-
-test('PteroServer PteroSocket', async () => {
-  const server = new PteroServer(process.env.TEST_SERVER_ID);
-  server.authorize(process.env.API_KEY);
-
-  const socket = new PteroSocket(server);
-  expect(socket).toBeDefined();
 });
