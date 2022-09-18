@@ -11,12 +11,12 @@ export class PteroSettingsManager {
     this.pteroServer = pteroServer;
   }
 
-  authorize(apiKey: string): Boolean {
+  authorize(apiKey: string): boolean {
     this.#apiKey = apiKey;
     return true;
   }
 
-  unAuthorize(): Boolean {
+  unAuthorize(): boolean {
     this.#apiKey = '';
     return true;
   }
@@ -30,7 +30,7 @@ export class PteroSettingsManager {
         'Authorization': `Bearer ${this.#apiKey}`
       },
       body: JSON.stringify({
-        name: name
+        name
       })
     });
 
@@ -61,7 +61,7 @@ export class PteroSettingsManager {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
@@ -105,7 +105,7 @@ export class PteroSettingsManager {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
@@ -151,7 +151,7 @@ export class PteroSettingsManager {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
