@@ -98,7 +98,7 @@ export class PteroSocket extends EventEmitter {
     }));
   }
 
-  sendPowerAction(action: string): void {
+  sendPowerAction(action: "start" | "stop" | "restart" | "kill"): void {
     this.send(JSON.stringify({
       event: 'set state',
       args: action
