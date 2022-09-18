@@ -1,0 +1,26 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: npm install -g yarn  
+      - name: yarn install, build and test
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          TEST_SERVER_ID: ${{ secrets.TEST_SERVER_ID }}
+        run: | 
+          yarn
+          yarn build
+          yarn test
