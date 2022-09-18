@@ -84,7 +84,7 @@ export interface APIServerDataVariables {
   data: APIServerDataVariable[] | null;
 }
 
-export interface ServerDataUser {
+export interface ServerDataAccount {
   is_server_owner: boolean;
   user_permissions: string[];
 }
@@ -92,5 +92,5 @@ export interface ServerDataUser {
 export interface APIServerData {
   object: string;
   attributes: ServerData;
-  meta: ServerDataUser;
+  meta: ServerDataAccount;
 }
