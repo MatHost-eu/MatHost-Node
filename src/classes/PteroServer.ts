@@ -15,18 +15,18 @@ export class PteroServer {
     this.serverId = serverId;
   }
 
-  authorize(apiKey: string): Boolean {
+  authorize(apiKey: string): boolean {
     this.#apiKey = apiKey;
     return true;
   }
 
-  unAuthorize(): Boolean {
+  unAuthorize(): boolean {
     this.#apiKey = '';
     return true;
   }
 
   async getServerData(): Promise<ServerData | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
       method: 'GET',
       headers: {
         "Accept": `application/json`,
@@ -37,7 +37,7 @@ export class PteroServer {
 
     switch (apiResponse.status) {
       case 200: {
-        let apiServerData = await apiResponse.json();
+        const apiServerData = await apiResponse.json();
         return (apiServerData as APIServerData).attributes;
       }
       case 404: {
@@ -63,14 +63,14 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
   }
 
   async getAccountData(): Promise<ServerDataAccount | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
       method: 'GET',
       headers: {
         "Accept": `application/json`,
@@ -81,7 +81,7 @@ export class PteroServer {
 
     switch (apiResponse.status) {
       case 200: {
-        let apiServerData = await apiResponse.json();
+        const apiServerData = await apiResponse.json();
         return (apiServerData as APIServerData).meta;
       }
       case 404: {
@@ -107,14 +107,14 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
   }
 
   async getStatusData(): Promise<StatusData | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/resources`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/resources`, {
       method: 'GET',
       headers: {
         "Accept": `application/json`,
@@ -125,7 +125,7 @@ export class PteroServer {
 
     switch (apiResponse.status) {
       case 200: {
-        let apiStatusData = await apiResponse.json();
+        const apiStatusData = await apiResponse.json();
         return (apiStatusData as APIStatusData).attributes;
       }
       case 404: {
@@ -151,14 +151,14 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
   }
 
   async getGameData(): Promise<MinecraftGameData | SCPSLGameData | GameDataException | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/players`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/players`, {
       method: 'GET',
       headers: {
         "Accept": `application/json`,
@@ -169,7 +169,7 @@ export class PteroServer {
 
     switch (apiResponse.status) {
       case 200: {
-        let apiGameData = await apiResponse.json();
+        const apiGameData = await apiResponse.json();
         return (apiGameData as APIGameData).data;
       }
       case 404: {
@@ -195,14 +195,14 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
   }
 
   async getSocketData(): Promise<SocketData | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/websocket`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/websocket`, {
       method: 'GET',
       headers: {
         "Accept": `application/json`,
@@ -213,7 +213,7 @@ export class PteroServer {
 
     switch (apiResponse.status) {
       case 200: {
-        let apiSocketData = await apiResponse.json();
+        const apiSocketData = await apiResponse.json();
         return (apiSocketData as APISocketData).data;
       }
       case 404: {
@@ -239,14 +239,14 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
   }
 
   async getActivityData(): Promise<ActivityData | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/activity`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/activity`, {
       method: 'GET',
       headers: {
         "Accept": `application/json`,
@@ -257,7 +257,7 @@ export class PteroServer {
 
     switch (apiResponse.status) {
       case 200: {
-        let apiActivityData = await apiResponse.json();
+        const apiActivityData = await apiResponse.json();
         return apiActivityData as ActivityData;
       }
       case 404: {
@@ -283,14 +283,14 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
   }
 
   async sendCommand(command: string): Promise<boolean | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/command`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/command`, {
       method: 'POST',
       headers: {
         "Accept": `application/json`,
@@ -298,7 +298,7 @@ export class PteroServer {
         "Authorization": `Bearer ${this.#apiKey}`
       },
       body: JSON.stringify({
-        command: command
+        command
       })
     });
 
@@ -329,14 +329,14 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
   }
 
   async changeState(state: "start" | "stop" | "restart" | "kill"): Promise<boolean | APIException> {
-    let apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/power`, {
+    const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/power`, {
       method: 'POST',
       headers: {
         "Accept": `application/json`,
@@ -375,7 +375,7 @@ export class PteroServer {
         } as APIException;
       }
       default: {
-        let apiException = await apiResponse.json();
+        const apiException = await apiResponse.json();
         return apiException as APIException;
       }
     }
