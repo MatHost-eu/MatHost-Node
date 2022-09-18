@@ -24,6 +24,7 @@ const gameData = await server.getGameData();
 Aby stworzyć WebSocket z konsolą serwera, należy użyć klasy `PteroServer`.
 ```js
 const socket = new PteroSocket(server);
+socket.connect()
 
 socket.on('message', () => {
   // Kod wykonywany po otrzymaniu wiadomości od socketa
