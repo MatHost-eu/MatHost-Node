@@ -11,6 +11,8 @@ export interface ServerData {
     port: number;
   }
 
+  description: string;
+
   limits: {
     memory: number;
     swap: number;
