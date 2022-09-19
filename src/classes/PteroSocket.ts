@@ -73,7 +73,7 @@ export class PteroSocket extends EventEmitter {
   /**
    * Odczytuje wiadomość z WebSocketa
    * @function
-   * @param data - Dane otrzymane od WebSocketa
+   * @param data Dane otrzymane od WebSocketa
    * @private
    * @return {Promise<void | APIException>}
    */
@@ -127,7 +127,7 @@ export class PteroSocket extends EventEmitter {
    *   event: 'send command',
    *   args: 'say Hello World!'
    * })
-   * @param {Record<string, any>} data - Dane, które mają zostać wysłane
+   * @param {Record<string, any>} data Dane, które mają zostać wysłane
    * @return {void}
    */
   send(data: Record<string, any>): void {
@@ -160,7 +160,7 @@ export class PteroSocket extends EventEmitter {
    * socket.connect();
    *
    * socket.sendCommand('say Hello World!');
-   * @param {string} command - Komenda, która ma zostać uruchomiona na serwerze
+   * @param {string} command Komenda, która ma zostać uruchomiona na serwerze
    * @return {void}
    */
   sendCommand(command: string): void {
@@ -178,7 +178,7 @@ export class PteroSocket extends EventEmitter {
    * socket.connect();
    *
    * socket.sendPowerAction('start');
-   * @param {"start" | "stop" | "restart" | "kill"} action - Akcja, która ma zostać wykonana na serwerze
+   * @param {"start" | "stop" | "restart" | "kill"} action Akcja, która ma zostać wykonana na serwerze
    * @return {void}
    */
   sendPowerAction(action: "start" | "stop" | "restart" | "kill"): void {

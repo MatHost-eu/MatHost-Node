@@ -12,9 +12,9 @@ import { ActivityData } from '../types/ActivityData';
  * @class PteroServer
  * @example
  * const server = new PteroServer('12345678');
- * @param {string} serverId - ID serwera
- * @property {string} serverId - ID serwera
- * @property {string} #apiKey - Klucz API
+ * @param {string} serverId ID serwera
+ * @property {string} serverId ID serwera
+ * @property {string} #apiKey Klucz API
  */
 export class PteroServer {
   serverId: string;
@@ -31,7 +31,7 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * server.authorize('KLUCZ_API');
-   * @param {string} apiKey - Klucz API
+   * @param {string} apiKey Klucz API
    * @return boolean
    */
   authorize(apiKey: string): boolean {
@@ -370,7 +370,7 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * await server.sendCommand('say Hello World!');
-   * @param {string} command - Komenda, która ma zostać wysłana do serwera
+   * @param {string} command Komenda, która ma zostać wysłana do serwera
    */
   async sendCommand(command: string): Promise<boolean | APIException> {
     const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/command`, {
@@ -424,7 +424,7 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * await server.changeState('start');
-   * @param {string} state - Akcja, która ma zostać wykonana na serwerze
+   * @param {string} state Akcja, która ma zostać wykonana na serwerze
    */
   async changeState(state: "start" | "stop" | "restart" | "kill"): Promise<boolean | APIException> {
     const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/power`, {

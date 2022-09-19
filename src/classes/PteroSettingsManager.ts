@@ -8,9 +8,9 @@ import { APIException } from '../types/Exceptions';
  * @class PteroSettingsManager
  * @example
  * const settings = new PteroSettingsManager(server);
- * @param {PteroServer} pteroServer - Serwer, którego ustawienia mają być zarządzane
- * @property {PteroServer} pteroServer - Serwer, którego ustawienia mają być zarządzane
- * @property {string} #apiKey - Klucz API
+ * @param {PteroServer} pteroServer Serwer, którego ustawienia mają być zarządzane
+ * @property {PteroServer} pteroServer Serwer, którego ustawienia mają być zarządzane
+ * @property {string} #apiKey Klucz API
  */
 export class PteroSettingsManager {
   pteroServer: PteroServer;
@@ -26,7 +26,7 @@ export class PteroSettingsManager {
    * @example
    * const settings = new PteroSettingsManager(server);
    * settings.authorize('API_KEY');
-   * @param {string} apiKey - Klucz API
+   * @param {string} apiKey Klucz API
    * @return boolean
    */
   authorize(apiKey: string): boolean {
@@ -53,7 +53,7 @@ export class PteroSettingsManager {
    * @example
    * const settings = new PteroSettingsManager(server);
    * settings.renameServer('Serwer Minecraft');
-   * @param {string} name - Nowa nazwa serwera
+   * @param {string} name Nowa nazwa serwera
    * @return {Promise<boolean | APIException>}
    */
   async renameServer(name: string): Promise<boolean | APIException> {
@@ -160,7 +160,7 @@ export class PteroSettingsManager {
    * @example
    * const settings = new PteroSettingsManager(server);
    * settings.changeDockerImage('ghcr.io/parkervcp/yolks:nodejs_16');
-   * @param {string} dockerImage - Nowy obraz dockera
+   * @param {string} dockerImage Nowy obraz dockera
    * @return {Promise<boolean | APIException>}
    */
   async setDocketImage(dockerImage: string): Promise<boolean | APIException> {
