@@ -1,4 +1,4 @@
-import { PteroServer } from '../index';
+import { PteroServer } from '..';
 import 'dotenv/config';
 
 test('PteroServer ServerData', async () => {

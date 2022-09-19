@@ -1,4 +1,4 @@
-import { PteroServer, PteroSocket } from '../index';
+import { PteroServer, PteroSocket } from '..';
 import 'dotenv/config';
 
 test('PteroSocket', async () => {
