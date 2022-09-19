@@ -6,7 +6,36 @@ export interface ActivityData {
 
 export interface APIActivityDataRecord {
   object: string;
-  attributes: Record<string, any>;
+  attributes: ActivityDataRecord;
+}
+
+export interface ActivityDataRecord {
+  id: string;
+  batch: string | null;
+  event: string;
+  is_api: boolean;
+  ip: string | null;
+  description: string | null;
+  properties: Record<string, any>;
+  has_additional_meta: boolean;
+  timestamp: string;
+  relationships?: {
+    actor?: APIActivityDataActor;
+  };
+}
+
+export interface APIActivityDataActor {
+  object: string;
+  attributes: ActivityDataActor;
+}
+
+export interface ActivityDataActor {
+  uuid: string;
+  username: string;
+  email: string;
+  image: string;
+  '2fa_enabled': boolean;
+  created_at: string;
 }
 
 export interface APIActivityDataMeta {
