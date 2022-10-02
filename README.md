@@ -26,8 +26,8 @@ Aby stworzyć WebSocket z konsolą serwera, należy użyć klasy `PteroServer`.
 const socket = new PteroSocket(server);
 socket.connect()
 
-socket.on('message', () => {
-  // Kod wykonywany po otrzymaniu wiadomości od socketa
+socket.on('auth_success', () => {
+  // Kod wykonywany po otrzymaniu informacji o prawidłowej autoryzacji
 });
 ```
 
