@@ -29,8 +29,7 @@ test('PteroServer GameData', async () => {
 	const server = new PteroServer(process.env.TEST_SERVER_ID);
 	server.authorize(process.env.API_KEY);
 
-	const gameData = await server.getGameData().catch();
-	// expect(gameData).toBeDefined();
+	await server.getGameData().catch();
 });
 
 test('PteroServer SocketData', async () => {
