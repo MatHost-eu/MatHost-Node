@@ -27,5 +27,5 @@ jobs:
           TEST_SERVER_ID: ${{ secrets.TEST_SERVER_ID }}
         run: | 
           npm install
-          npm build
-          npm test
+          npm run build
+          npm run test
