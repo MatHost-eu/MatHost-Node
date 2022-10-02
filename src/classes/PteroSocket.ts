@@ -1,8 +1,8 @@
 import { PteroServer } from './PteroServer';
-import { SocketData } from '../types/SocketData';
+import { SocketData, APIException } from '../types';
 import WebSocket from 'ws';
 import { EventEmitter } from 'node:events';
-import { APIException } from '../types/Exceptions';
+import { isError } from '../utils';
 
 /**
  * Klasa służąca do interakcji z API WebSocketa panelu serwera MatHost.eu
@@ -39,34 +39,38 @@ export class PteroSocket extends EventEmitter {
    * @return {Promise<void | APIException>}
    */
 	async connect(): Promise<void | APIException> {
-		const socketData = await this.pteroServer.getSocketData();
+		// eslint-disable-next-line no-async-promise-executor
+		return new Promise(async (resolve, reject) => {
+			const socketData = await this.pteroServer.getSocketData();
 
-		if (socketData as APIException) return socketData as APIException;
+			if (isError(socketData)) resolve(socketData as APIException);
 
-		if (this.socket) {
-			this.close();
-		}
+			if (this.socket) {
+				this.close();
+			}
 
-		const { token, socket } = socketData as SocketData;
-		this.socketUrl = socket;
-		this.#socketToken = token;
+			const { token, socket } = socketData as SocketData;
+			this.socketUrl = socket;
+			this.#socketToken = token;
 
-		this.socket = new WebSocket(this.socketUrl, {
-			origin: 'https://ptero.mathost.eu',
-		});
+			this.socket = new WebSocket(this.socketUrl, {
+				origin: 'https://ptero.mathost.eu',
+			});
 
-		this.socket.on('open', () => {
-			this.sendAuth();
-		});
-		this.socket.on('message', (data) => {
-			this.#readMessage(data);
-		});
-		this.socket.on('error', (error) => {
-			this.emit('error', error);
-		});
-		this.socket.on('close', (data) => {
-			this.emit('close', data);
-			this.socket = undefined;
+			this.socket.on('open', () => {
+				this.sendAuth();
+				resolve();
+			});
+			this.socket.on('message', (data) => {
+				this.#readMessage(data);
+			});
+			this.socket.on('error', (error) => {
+				this.emit('error', error);
+			});
+			this.socket.on('close', (data) => {
+				this.emit('close', data);
+				this.socket = undefined;
+			});
 		});
 	}
 
@@ -82,7 +86,9 @@ export class PteroSocket extends EventEmitter {
 
 		switch (event) {
 		case 'stats':
-			if (args[0].startsWith('{')) {this.emit('stats', JSON.parse(args[0]));}
+			if (args[0].startsWith('{')) {
+				this.emit('stats', JSON.parse(args[0]));
+			}
 			break;
 		case 'token expiring':
 			// eslint-disable-next-line no-case-declarations
@@ -147,7 +153,7 @@ export class PteroSocket extends EventEmitter {
 	sendAuth(): void {
 		this.send({
 			event: 'auth',
-			args: this.#socketToken,
+			args: [ this.#socketToken ],
 		});
 	}
 
@@ -165,7 +171,7 @@ export class PteroSocket extends EventEmitter {
 	sendCommand(command: string): void {
 		this.send({
 			event: 'send command',
-			args: command,
+			args: [ command ],
 		});
 	}
 
@@ -183,7 +189,7 @@ export class PteroSocket extends EventEmitter {
 	sendPowerAction(action: 'start' | 'stop' | 'restart' | 'kill'): void {
 		this.send({
 			event: 'set state',
-			args: action,
+			args: [ action ],
 		});
 	}
 
