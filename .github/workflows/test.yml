@@ -21,12 +21,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
-      - run: npm install -g yarn  
-      - name: yarn install, build and test
+      - name: npm install, build and test
         env:
           API_KEY: ${{ secrets.API_KEY }}
           TEST_SERVER_ID: ${{ secrets.TEST_SERVER_ID }}
         run: | 
-          yarn
-          yarn build
-          yarn test
+          npm install
+          npm build
+          npm test
