@@ -16,7 +16,6 @@ import {
  * const server = new PteroServer('12345678');
  * @param {string} serverId ID serwera
  * @property {string} serverId ID serwera
- * @property {string} #apiKey Klucz API
  */
 export class PteroServer {
 	serverId: string;
@@ -132,9 +131,9 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * const statusData = await server.getStatusData();
-   * @return {Promise<StatusData | APIException>}
+   * @return {Promise<StatusData>}
    */
-	async getStatusData(): Promise<StatusData | APIException> {
+	async getStatusData(): Promise<StatusData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/resources`, {
 			method: 'GET',
 			headers: {
@@ -168,9 +167,9 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * const gameData = await server.getGameData();
-   * @return {Promise<MinecraftGameData | SCPSLGameData | GameDataException | APIException>}
+   * @return {Promise<MinecraftGameData | SCPSLGameData>}
    */
-	async getGameData(): Promise<MinecraftGameData | SCPSLGameData | GameDataException | APIException> {
+	async getGameData(): Promise<MinecraftGameData | SCPSLGameData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/players`, {
 			method: 'GET',
 			headers: {
@@ -182,8 +181,15 @@ export class PteroServer {
 
 		switch (apiResponse.status) {
 		case 200: {
-			const apiGameData = await apiResponse.json();
-			return (apiGameData as APIGameData).data;
+			const apiGameData = (await apiResponse.json()) as APIGameData;
+			if (apiGameData.success) {
+				return (apiGameData.data as MinecraftGameData | SCPSLGameData);
+			}
+			// eslint-disable-next-line no-mixed-spaces-and-tabs
+ 			else if (!apiGameData.success) {
+				throw new Error((apiGameData.data as GameDataException).error);
+			}
+			break;
 		}
 		case 404: {
 			throw new Error('The requested resource could not be found.');
@@ -204,9 +210,9 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * const websocketData = await server.getSocketData();
-   * @return {Promise<SocketData | APIException>}
+   * @return {Promise<SocketData>}
    */
-	async getSocketData(): Promise<SocketData | APIException> {
+	async getSocketData(): Promise<SocketData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/websocket`, {
 			method: 'GET',
 			headers: {
@@ -240,9 +246,9 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * const activityData = await server.getActivityData();
-   * @return {Promise<ActivityData | APIException>}
+   * @return {Promise<ActivityData>}
    */
-	async getActivityData(): Promise<ActivityData | APIException> {
+	async getActivityData(): Promise<ActivityData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/activity`, {
 			method: 'GET',
 			headers: {
@@ -277,8 +283,9 @@ export class PteroServer {
    * const server = new PteroServer('12345678');
    * await server.sendCommand('say Hello World!');
    * @param {string} command Komenda, która ma zostać wysłana do serwera
+	 * @return Promise<boolean>
    */
-	async sendCommand(command: string): Promise<boolean | APIException> {
+	async sendCommand(command: string): Promise<boolean> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/command`, {
 			method: 'POST',
 			headers: {
@@ -315,8 +322,9 @@ export class PteroServer {
    * const server = new PteroServer('12345678');
    * await server.changeState('start');
    * @param {string} state Akcja, która ma zostać wykonana na serwerze
+	 * @return {Promise<boolean>}
    */
-	async changeState(state: 'start' | 'stop' | 'restart' | 'kill'): Promise<boolean | APIException> {
+	async changeState(state: 'start' | 'stop' | 'restart' | 'kill'): Promise<boolean> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/power`, {
 			method: 'POST',
 			headers: {

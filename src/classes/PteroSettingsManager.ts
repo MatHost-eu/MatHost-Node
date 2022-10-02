@@ -10,7 +10,6 @@ import { APIException } from '../types';
  * const settings = new PteroSettingsManager(server);
  * @param {PteroServer} pteroServer Serwer, którego ustawienia mają być zarządzane
  * @property {PteroServer} pteroServer Serwer, którego ustawienia mają być zarządzane
- * @property {string} #apiKey Klucz API
  */
 export class PteroSettingsManager {
 	pteroServer: PteroServer;
@@ -54,9 +53,9 @@ export class PteroSettingsManager {
 	 * const settings = new PteroSettingsManager(server);
 	 * settings.renameServer('Serwer Minecraft');
 	 * @param {string} name Nowa nazwa serwera
-	 * @return {Promise<boolean | APIException>}
+	 * @return {Promise<boolean>}
 	 */
-	async renameServer(name: string): Promise<boolean | APIException> {
+	async renameServer(name: string): Promise<boolean> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/server/${this.pteroServer.serverId}/settings/rename`, {
 			method: 'POST',
 			headers: {
@@ -92,9 +91,9 @@ export class PteroSettingsManager {
 	 * @example
 	 * const settings = new PteroSettingsManager(server);
 	 * settings.reinstallServer();
-	 * @return {Promise<boolean | APIException>}
+	 * @return {Promise<boolean>}
 	 */
-	async reinstallServer(): Promise<boolean | APIException> {
+	async reinstallServer(): Promise<boolean> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/server/${this.pteroServer.serverId}/settings/reinstall`, {
 			method: 'POST',
 			headers: {
@@ -129,9 +128,9 @@ export class PteroSettingsManager {
 	 * const settings = new PteroSettingsManager(server);
 	 * settings.changeDockerImage('ghcr.io/parkervcp/yolks:nodejs_16');
 	 * @param {string} dockerImage Nowy obraz dockera
-	 * @return {Promise<boolean | APIException>}
+	 * @return {Promise<boolean>}
 	 */
-	async setDocketImage(dockerImage: string): Promise<boolean | APIException> {
+	async setDocketImage(dockerImage: string): Promise<boolean> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/server/${this.pteroServer.serverId}/settings/docker-image`, {
 			method: 'POST',
 			headers: {

@@ -2,8 +2,7 @@ import { EventEmitter } from 'node:events';
 import WebSocket from 'ws';
 
 import { PteroServer } from './PteroServer';
-import { SocketData, APIException } from '../types';
-import { isError } from '../utils';
+import { SocketData } from '../types';
 
 /**
  * Klasa służąca do interakcji z API WebSocketa panelu serwera MatHost.eu
@@ -15,7 +14,6 @@ import { isError } from '../utils';
  * @property {PteroServer} pteroServer Serwer, z którego pobierane są dane
  * @property {WebSocket} socket WebSocket
  * @property {string} socketUrl Adres URL WebSocketa
- * @property {string} #socketToken Token WebSocketa
  */
 export class PteroSocket extends EventEmitter {
 	pteroServer: PteroServer;
@@ -37,14 +35,12 @@ export class PteroSocket extends EventEmitter {
    * @example
    * const socket = new PteroSocket(server);
    * socket.connect();
-   * @return {Promise<void | APIException>}
+   * @return {Promise<void>}
    */
-	async connect(): Promise<void | APIException> {
+	async connect(): Promise<void> {
 		// eslint-disable-next-line no-async-promise-executor
-		return new Promise(async (resolve, reject) => {
+		return new Promise(async (resolve) => {
 			const socketData = await this.pteroServer.getSocketData();
-
-			if (isError(socketData)) resolve(socketData as APIException);
 
 			if (this.socket) {
 				this.close();
@@ -80,9 +76,9 @@ export class PteroSocket extends EventEmitter {
    * @function
    * @param data Dane otrzymane od WebSocketa
    * @private
-   * @return {Promise<void | APIException>}
+   * @return {Promise<void>}
    */
-	async #readMessage(data: any): Promise<void | APIException> {
+	async #readMessage(data: any): Promise<void> {
 		const { event, args } = JSON.parse(data.toString());
 
 		switch (event) {
@@ -92,9 +88,7 @@ export class PteroSocket extends EventEmitter {
 			}
 			break;
 		case 'token expiring':
-			// eslint-disable-next-line no-case-declarations
-			const apiResponse = await this.regenToken();
-			if (apiResponse as APIException) return apiResponse as APIException;
+			await this.regenToken();
 
 			this.sendAuth();
 
@@ -113,11 +107,10 @@ export class PteroSocket extends EventEmitter {
    * const socket = new PteroSocket(server);
    * socket.regenToken();
    * socket.connect();
-   * @return {Promise<SocketData | APIException>}
+   * @return {Promise<SocketData>}
    */
-	async regenToken(): Promise<void | APIException> {
+	async regenToken(): Promise<void> {
 		const newSocketData = await this.pteroServer.getSocketData();
-		if (newSocketData as APIException) return newSocketData as APIException;
 
 		this.#socketToken = (newSocketData as SocketData).token;
 	}

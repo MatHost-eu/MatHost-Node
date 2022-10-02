@@ -5,6 +5,3 @@ export * from './classes/PteroSettingsManager';
 
 // Export types
 export * from './types';
-
-// Export utils
-export * from './utils';
