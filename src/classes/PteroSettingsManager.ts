@@ -1,7 +1,7 @@
 import { fetch } from 'undici';
 
 import { PteroServer } from './PteroServer';
-import { APIException } from '../types/Exceptions';
+import { APIException } from '../types';
 
 /**
  * Klasa służąca do zarządzania ustawieniami serwera.
@@ -21,41 +21,41 @@ export class PteroSettingsManager {
 	}
 
 	/**
-   * Autoryzuje się kluczem API
-   * @function
-   * @example
-   * const settings = new PteroSettingsManager(server);
-   * settings.authorize('API_KEY');
-   * @param {string} apiKey Klucz API
-   * @return boolean
-   */
+	 * Autoryzuje się kluczem API
+	 * @function
+	 * @example
+	 * const settings = new PteroSettingsManager(server);
+	 * settings.authorize('API_KEY');
+	 * @param {string} apiKey Klucz API
+	 * @return boolean
+	 */
 	authorize(apiKey: string): boolean {
 		this.#apiKey = apiKey;
 		return true;
 	}
 
 	/**
-   * Przerywa autoryzację
-   * @function
-   * @example
-   * const settings = new PteroSettingsManager(server);
-   * settings.unAuthorize();
-   * @return boolean
-   */
+	 * Przerywa autoryzację
+	 * @function
+	 * @example
+	 * const settings = new PteroSettingsManager(server);
+	 * settings.unAuthorize();
+	 * @return boolean
+	 */
 	unAuthorize(): boolean {
 		this.#apiKey = '';
 		return true;
 	}
 
 	/**
-   * Zmienia nazwę serwera
-   * @function
-   * @example
-   * const settings = new PteroSettingsManager(server);
-   * settings.renameServer('Serwer Minecraft');
-   * @param {string} name Nowa nazwa serwera
-   * @return {Promise<boolean | APIException>}
-   */
+	 * Zmienia nazwę serwera
+	 * @function
+	 * @example
+	 * const settings = new PteroSettingsManager(server);
+	 * settings.renameServer('Serwer Minecraft');
+	 * @param {string} name Nowa nazwa serwera
+	 * @return {Promise<boolean | APIException>}
+	 */
 	async renameServer(name: string): Promise<boolean | APIException> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/server/${this.pteroServer.serverId}/settings/rename`, {
 			method: 'POST',
@@ -74,42 +74,26 @@ export class PteroSettingsManager {
 			return true;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
 
 	/**
-   * Przeprowadza ponowną instalację serwera
-   * @function
-   * @example
-   * const settings = new PteroSettingsManager(server);
-   * settings.reinstallServer();
-   * @return {Promise<boolean | APIException>}
-   */
+	 * Przeprowadza ponowną instalację serwera
+	 * @function
+	 * @example
+	 * const settings = new PteroSettingsManager(server);
+	 * settings.reinstallServer();
+	 * @return {Promise<boolean | APIException>}
+	 */
 	async reinstallServer(): Promise<boolean | APIException> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/server/${this.pteroServer.serverId}/settings/reinstall`, {
 			method: 'POST',
@@ -126,43 +110,27 @@ export class PteroSettingsManager {
 			return true;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
 
 	/**
-   * Zmienia obraz dockera serwera
-   * @function
-   * @example
-   * const settings = new PteroSettingsManager(server);
-   * settings.changeDockerImage('ghcr.io/parkervcp/yolks:nodejs_16');
-   * @param {string} dockerImage Nowy obraz dockera
-   * @return {Promise<boolean | APIException>}
-   */
+	 * Zmienia obraz dockera serwera
+	 * @function
+	 * @example
+	 * const settings = new PteroSettingsManager(server);
+	 * settings.changeDockerImage('ghcr.io/parkervcp/yolks:nodejs_16');
+	 * @param {string} dockerImage Nowy obraz dockera
+	 * @return {Promise<boolean | APIException>}
+	 */
 	async setDocketImage(dockerImage: string): Promise<boolean | APIException> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/server/${this.pteroServer.serverId}/settings/docker-image`, {
 			method: 'POST',
@@ -181,30 +149,14 @@ export class PteroSettingsManager {
 			return true;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}

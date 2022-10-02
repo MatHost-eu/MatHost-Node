@@ -1,11 +1,13 @@
 import { fetch } from 'undici';
 
-import { APIServerData, ServerData, ServerDataAccount } from '../types/ServerData';
-import { APIStatusData, StatusData } from '../types/StatusData';
-import { APIException } from '../types/Exceptions';
-import { APIGameData, GameDataException, MinecraftGameData, SCPSLGameData } from '../types/GameData';
-import { APISocketData, SocketData } from '../types/SocketData';
-import { ActivityData } from '../types/ActivityData';
+import {
+	APIServerData, APIStatusData,
+	ServerData, StatusData, ServerDataAccount,
+	ActivityData,
+	APIGameData, GameDataException, MinecraftGameData, SCPSLGameData,
+	APISocketData, SocketData,
+	APIException,
+} from '../types';
 
 /**
  * Klasa do pozystania informacji o serwerze z API MatHost.eu
@@ -58,9 +60,9 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * const serverData = await server.getServerData();
-   * @return {Promise<ServerData | APIException>}
+   * @return {Promise<ServerData>}
    */
-	async getServerData(): Promise<ServerData | APIException> {
+	async getServerData(): Promise<ServerData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
 			method: 'GET',
 			headers: {
@@ -76,30 +78,14 @@ export class PteroServer {
 			return (apiServerData as APIServerData).attributes;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
@@ -110,9 +96,9 @@ export class PteroServer {
    * @example
    * const server = new PteroServer('12345678');
    * const serverAccountData = await server.getAccountData();
-   * @return {Promise<ServerDataAccount | APIException>}
+   * @return {Promise<ServerDataAccount>}
    */
-	async getAccountData(): Promise<ServerDataAccount | APIException> {
+	async getAccountData(): Promise<ServerDataAccount> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
 			method: 'GET',
 			headers: {
@@ -128,30 +114,14 @@ export class PteroServer {
 			return (apiServerData as APIServerData).meta;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
@@ -180,30 +150,14 @@ export class PteroServer {
 			return (apiStatusData as APIStatusData).attributes;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
@@ -232,30 +186,14 @@ export class PteroServer {
 			return (apiGameData as APIGameData).data;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
@@ -284,30 +222,14 @@ export class PteroServer {
 			return (apiSocketData as APISocketData).data;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
@@ -336,30 +258,14 @@ export class PteroServer {
 			return apiActivityData as ActivityData;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
@@ -390,30 +296,14 @@ export class PteroServer {
 			return true;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}
@@ -444,30 +334,14 @@ export class PteroServer {
 			return true;
 		}
 		case 404: {
-			return {
-				errors: [
-					{
-						code: '404',
-						status: 'Not Found',
-						detail: 'The requested resource could not be found.',
-					},
-				],
-			} as APIException;
+			throw new Error('The requested resource could not be found.');
 		}
 		case 500: {
-			return {
-				errors: [
-					{
-						code: '500',
-						status: 'Internal Server Error',
-						detail: 'An internal server error occurred.',
-					},
-				],
-			} as APIException;
+			throw new Error('An internal server error occurred.');
 		}
 		default: {
-			const apiException = await apiResponse.json();
-			return apiException as APIException;
+			const apiException = (await apiResponse.json()) as APIException;
+			throw new Error(apiException.errors[0].detail);
 		}
 		}
 	}

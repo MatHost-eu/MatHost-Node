@@ -1,7 +1,8 @@
+import { EventEmitter } from 'node:events';
+import WebSocket from 'ws';
+
 import { PteroServer } from './PteroServer';
 import { SocketData, APIException } from '../types';
-import WebSocket from 'ws';
-import { EventEmitter } from 'node:events';
 import { isError } from '../utils';
 
 /**

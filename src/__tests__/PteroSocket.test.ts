@@ -6,7 +6,7 @@ test('PteroSocket', async () => {
 	server.authorize(process.env.API_KEY);
 
 	const socket = new PteroSocket(server);
-	await socket.connect();
+	await socket.connect().catch();
 
 	expect(socket.socket).toBeDefined();
 });
