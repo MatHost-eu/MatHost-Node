@@ -5,6 +5,7 @@ import {
 	ServerData, StatusData, ServerDataAccount,
 	ActivityData,
 	APIGameData, GameDataException, MinecraftGameData, SCPSLGameData,
+	PublicData,
 	APISocketData, SocketData,
 	APIException,
 } from '../types';
@@ -200,6 +201,41 @@ export class PteroServer {
 		default: {
 			const apiException = (await apiResponse.json()) as APIException;
 			throw new Error(apiException.errors[0].detail);
+		}
+		}
+	}
+
+	/**
+	 * Pobiera dane o serwerze z listy serwerów MatHost
+	 * Wymaga posiadania serwera na liście serwerów publicznych MatHost
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * const gameData = await server.getPublicData();
+	 * @return {Promise<PublicData>}
+	 */
+	async getPublicData(): Promise<PublicData> {
+		const apiResponse = await fetch(`https://mathost.eu/api2/serverinfo/${this.serverId}`, {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${this.#apiKey}`,
+			},
+		});
+
+		switch (apiResponse.status) {
+		case 200: {
+			return (await apiResponse.json()) as PublicData;
+		}
+		case 404: {
+			throw new Error('The requested resource could not be found.');
+		}
+		case 500: {
+			throw new Error('An internal server error occurred.');
+		}
+		default: {
+			throw new Error('An unknown error occurred.');
 		}
 		}
 	}

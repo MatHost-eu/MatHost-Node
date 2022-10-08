@@ -1,6 +1,6 @@
 {
   "name": "mathost-node",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Moduł NPM służący do komunikowania się z API serwisu MatHost.eu",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,6 +10,7 @@
   "scripts": {
     "test": "jest --config jestconfig.json",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "docs": "typedoc --out docs src/index.ts",
     "build": "tsc",
     "lint": "eslint . --ext .ts"
   },
