@@ -7,3 +7,7 @@ export interface Exception {
 export interface APIException {
   errors: Exception[];
 }
+
+export interface GameDataException {
+  error: string;
+}

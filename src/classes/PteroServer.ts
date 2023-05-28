@@ -170,7 +170,7 @@ export class PteroServer {
    * const gameData = await server.getGameData();
    * @return {Promise<MinecraftGameData | SCPSLGameData>}
    */
-	async getGameData(): Promise<MinecraftGameData | SCPSLGameData> {
+	async getGameData(): Promise<APIGameData | MinecraftGameData | SCPSLGameData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/players`, {
 			method: 'GET',
 			headers: {
@@ -183,14 +183,12 @@ export class PteroServer {
 		switch (apiResponse.status) {
 		case 200: {
 			const apiGameData = (await apiResponse.json()) as APIGameData;
-			if (apiGameData.success) {
+			if (apiGameData?.success) {
 				return (apiGameData.data as MinecraftGameData | SCPSLGameData);
 			}
-			// eslint-disable-next-line no-mixed-spaces-and-tabs
- 			else if (!apiGameData.success) {
-				throw new Error((apiGameData.data as GameDataException).error);
+			else {
+				throw new Error((apiGameData.data as GameDataException)?.error || 'An unknown error occurred.');
 			}
-			break;
 		}
 		case 404: {
 			throw new Error('The requested resource could not be found.');
