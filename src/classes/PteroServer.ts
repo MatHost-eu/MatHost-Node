@@ -222,6 +222,8 @@ export class PteroServer {
 			},
 		});
 
+		console.log('The MatHost Public API is deprecated and will be removed in the future. Please use the Ptero API instead.');
+
 		switch (apiResponse.status) {
 		case 200: {
 			return (await apiResponse.json()) as PublicData;
