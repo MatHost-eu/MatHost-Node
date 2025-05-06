@@ -5,15 +5,15 @@ import { PteroServer } from './PteroServer';
 import { SocketData } from '../types';
 
 /**
- * Klasa służąca do interakcji z API WebSocketa panelu serwera MatHost.eu
+ * Class for interacting with the WebSocket API of the MatHost.eu server panel
  * @class PteroSocket
  * @extends EventEmitter
  * @example
  * const socket = new PteroSocket(server);
- * @param {PteroServer} pteroServer Serwer, z którego pobierane są dane
- * @property {PteroServer} pteroServer Serwer, z którego pobierane są dane
+ * @param {PteroServer} pteroServer Server from which data is retrieved
+ * @property {PteroServer} pteroServer Server from which data is retrieved
  * @property {WebSocket} socket WebSocket
- * @property {string} socketUrl Adres URL WebSocketa
+ * @property {string} socketUrl WebSocket URL
  */
 export class PteroSocket extends EventEmitter {
 	pteroServer: PteroServer;
@@ -30,13 +30,13 @@ export class PteroSocket extends EventEmitter {
 	}
 
 	/**
-   * Łączy się z WebSocketem panelu serwera
-   * @function
-   * @example
-   * const socket = new PteroSocket(server);
-   * socket.connect();
-   * @return {Promise<void>}
-   */
+	 * Connects to the server panel WebSocket
+	 * @function
+	 * @example
+	 * const socket = new PteroSocket(server);
+	 * socket.connect();
+	 * @return {Promise<void>}
+	 */
 	async connect(): Promise<void> {
 		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async (resolve) => {
@@ -72,12 +72,12 @@ export class PteroSocket extends EventEmitter {
 	}
 
 	/**
-   * Odczytuje wiadomość z WebSocketa
-   * @function
-   * @param data Dane otrzymane od WebSocketa
-   * @private
-   * @return {Promise<void>}
-   */
+	 * Reads a message from the WebSocket
+	 * @function
+	 * @param data Data received from the WebSocket
+	 * @private
+	 * @return {Promise<void>}
+	 */
 	async #readMessage(data: any): Promise<void> {
 		const { event, args } = JSON.parse(data.toString());
 
@@ -101,14 +101,14 @@ export class PteroSocket extends EventEmitter {
 	}
 
 	/**
-   * Regeneruje token autorizacyjny WebSocketa
-   * @function
-   * @example
-   * const socket = new PteroSocket(server);
-   * socket.regenToken();
-   * socket.connect();
-   * @return {Promise<SocketData>}
-   */
+	 * Regenerates the WebSocket authorization token
+	 * @function
+	 * @example
+	 * const socket = new PteroSocket(server);
+	 * socket.regenToken();
+	 * socket.connect();
+	 * @return {Promise<SocketData>}
+	 */
 	async regenToken(): Promise<void> {
 		const newSocketData = await this.pteroServer.getSocketData();
 
@@ -116,34 +116,34 @@ export class PteroSocket extends EventEmitter {
 	}
 
 	/**
-   * Wysyła wiadomość do WebSocketa
-   * @function
-   * @example
-   * const socket = new PteroSocket(server);
-   * socket.connect();
-   *
-   * socket.send({
-   *   event: 'send command',
-   *   args: 'say Hello World!'
-   * })
-   * @param {Record<string, any>} data Dane, które mają zostać wysłane
-   * @return {void}
-   */
+	 * Sends a message to the WebSocket
+	 * @function
+	 * @example
+	 * const socket = new PteroSocket(server);
+	 * socket.connect();
+	 *
+	 * socket.send({
+	 *   event: 'send command',
+	 *   args: 'say Hello World!'
+	 * })
+	 * @param {Record<string, any>} data Data to be sent
+	 * @return {void}
+	 */
 	send(data: Record<string, any>): void {
 		this.socket.send(JSON.stringify(data));
 	}
 
 	/**
-   * Wysyła wiadomość z tokenem autoryzacyjnym
-   * @function
-   * @example
-   * const socket = new PteroSocket(server);
-   * socket.connect();
-   *
-   * // Ta metoda jest wywoływana automatycznie, więc używanie jej nie jest konieczne
-   * socket.sendAuth();
-   * @return {void}
-   */
+	 * Sends a message with the authorization token
+	 * @function
+	 * @example
+	 * const socket = new PteroSocket(server);
+	 * socket.connect();
+	 *
+	 * // This method is called automatically, so using it is not necessary
+	 * socket.sendAuth();
+	 * @return {void}
+	 */
 	sendAuth(): void {
 		this.send({
 			event: 'auth',
@@ -152,16 +152,16 @@ export class PteroSocket extends EventEmitter {
 	}
 
 	/**
-   * Wysyła komendę do konsoli serwera
-   * @function
-   * @example
-   * const socket = new PteroSocket(server);
-   * socket.connect();
-   *
-   * socket.sendCommand('say Hello World!');
-   * @param {string} command Komenda, która ma zostać uruchomiona na serwerze
-   * @return {void}
-   */
+	 * Sends a command to the server console
+	 * @function
+	 * @example
+	 * const socket = new PteroSocket(server);
+	 * socket.connect();
+	 *
+	 * socket.sendCommand('say Hello World!');
+	 * @param {string} command Command to be executed on the server
+	 * @return {void}
+	 */
 	sendCommand(command: string): void {
 		this.send({
 			event: 'send command',
@@ -170,16 +170,16 @@ export class PteroSocket extends EventEmitter {
 	}
 
 	/**
-   * Wykonuje akcje na serwerze
-   * @function
-   * @example
-   * const socket = new PteroSocket(server);
-   * socket.connect();
-   *
-   * socket.sendPowerAction('start');
-   * @param {"start" | "stop" | "restart" | "kill"} action Akcja, która ma zostać wykonana na serwerze
-   * @return {void}
-   */
+	 * Performs an action on the server
+	 * @function
+	 * @example
+	 * const socket = new PteroSocket(server);
+	 * socket.connect();
+	 *
+	 * socket.sendPowerAction('start');
+	 * @param {"start" | "stop" | "restart" | "kill"} action Action to be performed on the server
+	 * @return {void}
+	 */
 	sendPowerAction(action: 'start' | 'stop' | 'restart' | 'kill'): void {
 		this.send({
 			event: 'set state',
@@ -188,15 +188,15 @@ export class PteroSocket extends EventEmitter {
 	}
 
 	/**
-   * Zamyka połączenie z WebSocketem
-   * @function
-   * @example
-   * const socket = new PteroSocket(server);
-   * socket.connect();
-   *
-   * socket.close();
-   * @return {void}
-   */
+	 * Closes the WebSocket connection
+	 * @function
+	 * @example
+	 * const socket = new PteroSocket(server);
+	 * socket.connect();
+	 *
+	 * socket.close();
+	 * @return {void}
+	 */
 	close(): void {
 		this.socket.close();
 		this.socket = undefined;

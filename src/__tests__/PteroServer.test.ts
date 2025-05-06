@@ -34,15 +34,6 @@ test('PteroServer StatusData', async () => {
 // 	console.log((gameData as SCPSLGameData).info.bans);
 // 	expect(gameData).toBeDefined();
 // });
-//
-// eslint-disable-next-line jest/no-commented-out-tests
-// test('PteroServer PublicData', async () => {
-// 	const server = new PteroServer(process.env.TEST_SERVER_ID);
-// 	server.authorize(process.env.API_KEY);
-//
-// 	const publicData = await server.getPublicData().catch();
-// 	expect(publicData).toBeDefined();
-// });
 
 test('PteroServer SocketData', async () => {
   const server = new PteroServer(process.env.TEST_SERVER_ID!);

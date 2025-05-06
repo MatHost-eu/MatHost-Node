@@ -4,12 +4,12 @@ import { PteroServer } from './PteroServer';
 import { APIException } from '../types';
 
 /**
- * Klasa służąca do zarządzania ustawieniami serwera.
+ * Class for managing server settings.
  * @class PteroSettingsManager
  * @example
  * const settings = new PteroSettingsManager(server);
- * @param {PteroServer} pteroServer Serwer, którego ustawienia mają być zarządzane
- * @property {PteroServer} pteroServer Serwer, którego ustawienia mają być zarządzane
+ * @param {PteroServer} pteroServer Server whose settings are to be managed
+ * @property {PteroServer} pteroServer Server whose settings are to be managed
  */
 export class PteroSettingsManager {
   pteroServer: PteroServer;
@@ -20,12 +20,12 @@ export class PteroSettingsManager {
   }
 
   /**
-   * Autoryzuje się kluczem API
+   * Authorizes with an API key
    * @function
    * @example
    * const settings = new PteroSettingsManager(server);
    * settings.authorize('API_KEY');
-   * @param {string} apiKey Klucz API
+   * @param {string} apiKey API key
    * @return boolean
    */
   authorize(apiKey: string): boolean {
@@ -34,7 +34,7 @@ export class PteroSettingsManager {
   }
 
   /**
-   * Przerywa autoryzację
+   * Revokes authorization
    * @function
    * @example
    * const settings = new PteroSettingsManager(server);
@@ -47,12 +47,12 @@ export class PteroSettingsManager {
   }
 
   /**
-   * Zmienia nazwę serwera
+   * Changes the server name
    * @function
    * @example
    * const settings = new PteroSettingsManager(server);
-   * settings.renameServer('Serwer Minecraft');
-   * @param {string} name Nowa nazwa serwera
+   * settings.renameServer('Minecraft Server');
+   * @param {string} name New server name
    * @return {Promise<boolean>}
    */
   async renameServer(name: string): Promise<boolean> {
@@ -89,7 +89,7 @@ export class PteroSettingsManager {
   }
 
   /**
-   * Przeprowadza ponowną instalację serwera
+   * Reinstalls the server
    * @function
    * @example
    * const settings = new PteroSettingsManager(server);
@@ -128,12 +128,12 @@ export class PteroSettingsManager {
   }
 
   /**
-   * Zmienia obraz dockera serwera
+   * Changes the server's Docker image
    * @function
    * @example
    * const settings = new PteroSettingsManager(server);
    * settings.changeDockerImage('ghcr.io/parkervcp/yolks:nodejs_16');
-   * @param {string} dockerImage Nowy obraz dockera
+   * @param {string} dockerImage New Docker image
    * @return {Promise<boolean>}
    */
   async setDocketImage(dockerImage: string): Promise<boolean> {

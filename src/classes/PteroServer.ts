@@ -5,18 +5,17 @@ import {
 	ServerData, StatusData, ServerDataAccount,
 	ActivityData,
 	APIGameData, GameDataException, MinecraftGameData, SCPSLGameData,
-	PublicData,
 	APISocketData, SocketData,
 	APIException,
 } from '../types';
 
 /**
- * Klasa do pozystania informacji o serwerze z API MatHost.eu
+ * Class for retrieving server information from the MatHost.eu API
  * @class PteroServer
  * @example
  * const server = new PteroServer('12345678');
- * @param {string} serverId ID serwera
- * @property {string} serverId ID serwera
+ * @param {string} serverId Server ID
+ * @property {string} serverId Server ID
  */
 export class PteroServer {
 	serverId: string;
@@ -28,40 +27,40 @@ export class PteroServer {
 	}
 
 	/**
-   * Autoryzuje się kluczem API
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * server.authorize('KLUCZ_API');
-   * @param {string} apiKey Klucz API
-   * @return boolean
-   */
+	 * Authorizes with an API key
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * server.authorize('API_KEY');
+	 * @param {string} apiKey API key
+	 * @return boolean
+	 */
 	authorize(apiKey: string): boolean {
 		this.#apiKey = apiKey;
 		return true;
 	}
 
 	/**
-   * Przerywa autoryzację
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * server.unAuthorize();
-   * @return boolean
-   */
+	 * Revokes authorization
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * server.unAuthorize();
+	 * @return boolean
+	 */
 	unAuthorize(): boolean {
 		this.#apiKey = '';
 		return true;
 	}
 
 	/**
-   * Pobiera dane o serwerze
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * const serverData = await server.getServerData();
-   * @return {Promise<ServerData>}
-   */
+	 * Retrieves server data
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * const serverData = await server.getServerData();
+	 * @return {Promise<ServerData>}
+	 */
 	async getServerData(): Promise<ServerData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
 			method: 'GET',
@@ -91,13 +90,13 @@ export class PteroServer {
 	}
 
 	/**
-   * Pobiera dane o uprawnieniach konta na serwerze
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * const serverAccountData = await server.getAccountData();
-   * @return {Promise<ServerDataAccount>}
-   */
+	 * Retrieves account permissions data for the server
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * const serverAccountData = await server.getAccountData();
+	 * @return {Promise<ServerDataAccount>}
+	 */
 	async getAccountData(): Promise<ServerDataAccount> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}`, {
 			method: 'GET',
@@ -127,13 +126,13 @@ export class PteroServer {
 	}
 
 	/**
-   * Pobiera dane o statusie serwera
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * const statusData = await server.getStatusData();
-   * @return {Promise<StatusData>}
-   */
+	 * Retrieves server status data
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * const statusData = await server.getStatusData();
+	 * @return {Promise<StatusData>}
+	 */
 	async getStatusData(): Promise<StatusData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/resources`, {
 			method: 'GET',
@@ -163,13 +162,13 @@ export class PteroServer {
 	}
 
 	/**
-   * Pobiera dane gry
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * const gameData = await server.getGameData();
-   * @return {Promise<MinecraftGameData | SCPSLGameData>}
-   */
+	 * Retrieves game data
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * const gameData = await server.getGameData();
+	 * @return {Promise<MinecraftGameData | SCPSLGameData>}
+	 */
 	async getGameData(): Promise<APIGameData | MinecraftGameData | SCPSLGameData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/players`, {
 			method: 'GET',
@@ -204,50 +203,13 @@ export class PteroServer {
 	}
 
 	/**
-	 * Pobiera dane o serwerze z listy serwerów MatHost
-	 * Wymaga posiadania serwera na liście serwerów publicznych MatHost
+	 * Retrieves WebSocket data for the server
 	 * @function
 	 * @example
 	 * const server = new PteroServer('12345678');
-	 * const gameData = await server.getPublicData();
-	 * @return {Promise<PublicData>}
+	 * const websocketData = await server.getSocketData();
+	 * @return {Promise<SocketData>}
 	 */
-	async getPublicData(): Promise<PublicData> {
-		const apiResponse = await fetch(`https://mathost.eu/api2/serverinfo/${this.serverId}`, {
-			method: 'GET',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${this.#apiKey}`,
-			},
-		});
-
-		console.log('The MatHost Public API is deprecated and will be removed in the future. Please use the Ptero API instead.');
-
-		switch (apiResponse.status) {
-		case 200: {
-			return (await apiResponse.json()) as PublicData;
-		}
-		case 404: {
-			throw new Error('The requested resource could not be found.');
-		}
-		case 500: {
-			throw new Error('An internal server error occurred.');
-		}
-		default: {
-			throw new Error('An unknown error occurred.');
-		}
-		}
-	}
-
-	/**
-   * Pobiera informacje o danych do websocketa serwera
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * const websocketData = await server.getSocketData();
-   * @return {Promise<SocketData>}
-   */
 	async getSocketData(): Promise<SocketData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/websocket`, {
 			method: 'GET',
@@ -277,13 +239,13 @@ export class PteroServer {
 	}
 
 	/**
-   * Pobiera informacje o aktywności na serwerze
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * const activityData = await server.getActivityData();
-   * @return {Promise<ActivityData>}
-   */
+	 * Retrieves server activity data
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * const activityData = await server.getActivityData();
+	 * @return {Promise<ActivityData>}
+	 */
 	async getActivityData(): Promise<ActivityData> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/activity`, {
 			method: 'GET',
@@ -313,14 +275,14 @@ export class PteroServer {
 	}
 
 	/**
-   * Wysyła komendę do serwera
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * await server.sendCommand('say Hello World!');
-   * @param {string} command Komenda, która ma zostać wysłana do serwera
+	 * Sends a command to the server
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * await server.sendCommand('say Hello World!');
+	 * @param {string} command Command to send to the server
 	 * @return Promise<boolean>
-   */
+	 */
 	async sendCommand(command: string): Promise<boolean> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/command`, {
 			method: 'POST',
@@ -352,14 +314,14 @@ export class PteroServer {
 	}
 
 	/**
-   * Wykonuje akcję na serwerze
-   * @function
-   * @example
-   * const server = new PteroServer('12345678');
-   * await server.changeState('start');
-   * @param {string} state Akcja, która ma zostać wykonana na serwerze
+	 * Executes an action on the server
+	 * @function
+	 * @example
+	 * const server = new PteroServer('12345678');
+	 * await server.changeState('start');
+	 * @param {string} state Action to perform on the server
 	 * @return {Promise<boolean>}
-   */
+	 */
 	async changeState(state: 'start' | 'stop' | 'restart' | 'kill'): Promise<boolean> {
 		const apiResponse = await fetch(`https://ptero.mathost.eu/api/client/servers/${this.serverId}/power`, {
 			method: 'POST',

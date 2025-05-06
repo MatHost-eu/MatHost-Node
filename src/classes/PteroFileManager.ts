@@ -4,12 +4,12 @@ import { APIException } from '../types';
 import { APIFile, APIFileList } from 'types/FileData';
 
 /**
- * Klasa służąca do zarządzania plikami serwera.
+ * Class for managing server files.
  * @class PteroFileManager
  * @example
  * const files = new PteroFileManager(server);
- * @param {PteroServer} pteroServer Serwer, którego pliki mają być zarządzane
- * @property {PteroServer} pteroServer Serwer, którego pliki mają być zarządzane
+ * @param {PteroServer} pteroServer Server whose files are to be managed
+ * @property {PteroServer} pteroServer Server whose files are to be managed
  */
 export class PteroFileManager {
   pteroServer: PteroServer;
@@ -20,12 +20,12 @@ export class PteroFileManager {
   }
 
   /**
-   * Autoryzuje się kluczem API
+   * Authorizes with an API key
    * @function
    * @example
    * const files = new PteroFileManager(server);
    * files.authorize('API_KEY');
-   * @param {string} apiKey Klucz API
+   * @param {string} apiKey API key
    * @return boolean
    */
   authorize(apiKey: string): boolean {
@@ -34,7 +34,7 @@ export class PteroFileManager {
   }
 
   /**
-   * Przerywa autoryzację
+   * Revokes authorization
    * @function
    * @example
    * const files = new PteroFileManager(server);
@@ -47,12 +47,12 @@ export class PteroFileManager {
   }
 
   /**
-   * Zwraca listę plików w katalogu
+   * Returns a list of files in a directory
    * @function
    * @example
    * const files = new PteroFileManager(server);
    * files.getFiles('/');
-   * @param {string} directory Folder do przeszukania
+   * @param {string} directory Directory to search
    * @return {Promise<APIFile[]>}
    */
   async getFiles(directory?: string): Promise<APIFile[]> {
@@ -90,12 +90,12 @@ export class PteroFileManager {
   }
 
   /**
-   * Zwraca zawartość określonego pliku
+   * Returns the content of a specified file
    * @function
    * @example
    * const files = new PteroFileManager(server);
    * files.getFile('package.json');
-   * @param {string} file Ścieżka do pliku
+   * @param {string} file Path to the file
    * @return {Promise<string>}
    */
   async getFile(file: string): Promise<string> {
@@ -133,13 +133,13 @@ export class PteroFileManager {
   }
 
   /**
-   * Tworzy/Nadpisuje podany plik
+   * Creates/Overwrites the specified file
    * @function
    * @example
    * const files = new PteroFileManager(server);
    * files.writeFile('test.txt', 'Hello World!');
-   * @param {string} file Ścieżka do pliku
-   * @param {string} content Nowa zawartość pliku
+   * @param {string} file Path to the file
+   * @param {string} content New content of the file
    * @return {Promise<boolean>}
    */
   async writeFile(file: string, content?: string): Promise<boolean> {

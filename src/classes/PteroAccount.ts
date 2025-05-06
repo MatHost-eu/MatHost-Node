@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 /**
- * Klasa do pozystania informacji o koncie z API MatHost.eu
+ * Class for retrieving account information from the MatHost.eu API
  * @class PteroAccount
  * @example
  * const account = new PteroAccount();
@@ -23,12 +23,12 @@ export class PteroAccount {
 	}
 
 	/**
-   * Autoryzuje się kluczem API
+   * Authorizes with an API key
    * @function
    * @example
    * const account = new PteroAccount();
-   * account.authorize('KLUCZ_API');
-   * @param {string} apiKey Klucz API
+   * account.authorize('API_KEY');
+   * @param {string} apiKey API key
    * @return boolean
    */
 	authorize(apiKey: string): boolean {
@@ -37,7 +37,7 @@ export class PteroAccount {
 	}
 
 	/**
-   * Przerywa autoryzację
+   * Revokes authorization
    * @function
    * @example
    * const account = new PteroAccount();
@@ -50,7 +50,7 @@ export class PteroAccount {
 	}
 
 	/**
-   * Pobiera dane o koncie
+   * Retrieves account data
    * @function
    * @example
    * const account = new PteroAccount();
@@ -86,7 +86,7 @@ export class PteroAccount {
 	}
 
 	/**
-	 * Generuje kod QR pozwalający ustawienie weryfikację dwuetapową konta
+	 * Generates a QR code for enabling two-factor authentication
 	 * @function
 	 * @example
 	 * const account = new PteroAccount();
@@ -122,7 +122,7 @@ export class PteroAccount {
 	}
 
 	/**
-	 * Włącza weryfikację dwuetapową dla konta
+	 * Enables two-factor authentication for the account
 	 * @function
 	 * @example
 	 * const account = new PteroAccount();
@@ -161,7 +161,7 @@ export class PteroAccount {
 	}
 
 	/**
-	 * Wyłącza weryfikację dwuetapową konta
+	 * Disables two-factor authentication for the account
 	 * @function
 	 * @example
 	 * const account = new PteroAccount();

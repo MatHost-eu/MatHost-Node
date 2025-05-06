@@ -232,16 +232,8 @@ export interface APIGameData {
   data: MinecraftGameData | SCPSLGameData | GameDataException;
 }
 
-export interface PublicData {
-  game: string;
-  port: number;
-  name: string;
-  players: string;
-  maxplayers: string;
-}
-
 export interface APISocketData {
-  data: SocketData
+  data: SocketData;
 }
 
 export interface SocketData {
@@ -264,5 +256,5 @@ export interface StatusData {
 
 export interface APIStatusData {
   object: string;
-  attributes: StatusData
+  attributes: StatusData;
 }
